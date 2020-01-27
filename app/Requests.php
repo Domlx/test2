@@ -14,4 +14,9 @@ class Requests extends Model
     protected $fillable = [
         'description',
     ];
+
+    public function person()
+    {
+        return $this->hasOne(Persons::class, 'person_id', 'id');
+    }
 }

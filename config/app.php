@@ -56,6 +56,8 @@ return [
 
     'asset_url' => env('ASSET_URL', null),
 
+    'pagination_limit' => env('PAGINATION_LIMIT', 100),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
