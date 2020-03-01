@@ -9,6 +9,10 @@ use Illuminate\Http\JsonResponse;
 use App\Exceptions\InternalErrorException;
 use Illuminate\Http\Request;
 
+/**
+ * Class PersonsController
+ * @package App\Http\Controllers
+ */
 class PersonsController extends Controller
 {
     /**
@@ -49,7 +53,12 @@ class PersonsController extends Controller
         }
     }
 
-    public function search(Request $request)
+    /**
+     * @param PersonSearchRequest $request
+     * @return JsonResponse
+     * @throws InternalErrorException
+     */
+    public function search(PersonSearchRequest $request)
     {
         try {
             $result = $this->service->search($request);
@@ -76,12 +85,12 @@ class PersonsController extends Controller
     }
 
     /**
-     * @param  Request  $request
+     * @param  PersonCreateRequest  $request
      *
      * @return JsonResponse
      * @throws InternalErrorException
      */
-    public function create(Request $request): JsonResponse
+    public function create(PersonCreateRequest $request): JsonResponse
     {
         try {
             $message = $this->service->create($request)
