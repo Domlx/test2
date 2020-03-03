@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Mail\UserCreated;
 use App\Repositories\Interfaces\IRepository;
-use App\Persons;
+use App\Models\Persons;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Mail;
 
