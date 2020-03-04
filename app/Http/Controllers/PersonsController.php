@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PersonCreateRequest;
 use App\Http\Requests\PersonSearchRequest;
+use App\Http\Requests\PersonUpdateRequest;
 use App\Services\PersonsService;
 use Illuminate\Http\JsonResponse;
 use App\Exceptions\InternalErrorException;
-use Illuminate\Http\Request;
 
 /**
  * Class PersonsController
@@ -105,12 +105,12 @@ class PersonsController extends Controller
 
     /**
      * @param  int  $id
-     * @param  Request  $request
+     * @param  PersonUpdateRequest  $request
      *
      * @return JsonResponse
      * @throws InternalErrorException
      */
-    public function update(int $id, Request $request): JsonResponse
+    public function update(int $id, PersonUpdateRequest $request): JsonResponse
     {
         try {
             $message = $this->service->update($id, $request)

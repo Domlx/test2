@@ -51,12 +51,12 @@ class PersonsRepository implements IRepository
     public function create(array $data)
     {
         $person = $this->model->create($data);
-        if($person && $data['requests']){
-            foreach ($data['requests'] as $item){
-                $person->requests()->create($item);
-            }
+        if($person && isset($data['requests']) && $data['requests']){
+            $person->requests()->createMany($data['requests']);
         }
+
         Mail::to(config('mail.to.address'))->send(new UserCreated());
+
         return $person;
     }
 
