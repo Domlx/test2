@@ -27,7 +27,7 @@ class UserCreated extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.mail')
+        return $this->view('mails.mail')
             ->from(config('mail.from.address'), config('mail.from.name'))
             ->subject('New person created');
     }

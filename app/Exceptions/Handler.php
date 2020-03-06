@@ -4,6 +4,10 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 class Handler extends ExceptionHandler
 {
@@ -29,10 +33,10 @@ class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * @param  \Exception  $exception
+     * @param Exception $exception
      * @return void
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function report(Exception $exception)
     {
@@ -42,14 +46,23 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
+     * @param  Request  $request
+     * @param Exception $exception
      * @return \Symfony\Component\HttpFoundation\Response
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function render($request, Exception $exception)
     {
+
+        if ($exception instanceof InternalErrorException) {
+            throw new HttpResponseException(response()->json(['data' => $exception->buildError()],
+                Response::HTTP_INTERNAL_SERVER_ERROR));
+        }
+        if ($exception instanceof ValidationException) {
+            throw new HttpResponseException(response()->json(['data' => $exception->errors()],
+                Response::HTTP_UNPROCESSABLE_ENTITY));
+        }
         return parent::render($request, $exception);
     }
 }

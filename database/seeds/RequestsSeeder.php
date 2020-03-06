@@ -1,6 +1,6 @@
 <?php
 
-use App\Requests;
+use App\Models\Requests;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 

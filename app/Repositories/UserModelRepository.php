@@ -1,30 +1,30 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\User;
 
-use App\Mail\UserCreated;
 use App\Repositories\Interfaces\IRepository;
-use App\Models\Persons;
+use App\Models\User;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Mail;
 
 /**
- * Class PersonsRepository
- * @package App\Repositories
+ * Class UserModelRepository
+ *
+ * @package App\Repositories\User
  */
-class PersonsRepository implements IRepository
+class UserModelRepository implements IRepository
 {
     /**
-     * @var Persons
+     * @var User
      */
     protected $model;
 
     /**
      * PersonsRepository constructor.
      *
-     * @param  Persons  $model
+     * @param  User  $model
      */
-    public function __construct(Persons $model)
+    public function __construct(User $model)
     {
         $this->model = $model;
     }
@@ -50,14 +50,7 @@ class PersonsRepository implements IRepository
      */
     public function create(array $data)
     {
-        $person = $this->model->create($data);
-        if($person && isset($data['requests']) && $data['requests']){
-            $person->requests()->createMany($data['requests']);
-        }
-
-        Mail::to(config('mail.to.address'))->send(new UserCreated());
-
-        return $person;
+        return $this->model->create($data);
     }
 
     /**
@@ -93,24 +86,21 @@ class PersonsRepository implements IRepository
         return $this->model->findOrFail($id);
     }
 
-
     /**
-     * @param $city
-     * @param $zip
-     * @return mixed
+     * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
-    public function search($city, $zip)
+    public function authUser():?Authenticatable
     {
-        return $this->model->where('city', 'like', $city)->where('zip_code', 'like', $zip)->get();
+        return auth()->user();
     }
 
     /**
-     * @param $key
-     * @param $value
-     * @return mixed
+     * Clear tokens of authenticated user
      */
-    public function searchByOne($key, $value)
+    public function clearTokens():void
     {
-        return $this->model->where($key, 'like', $value)->get();
+        $this->authUser()->tokens->each(function ($token) {
+            $token->delete();
+        });
     }
 }

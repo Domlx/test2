@@ -20,7 +20,7 @@ class CreateRequestsTable extends Migration
             $table->timestamps();
         });
         Schema::table('requests', function (Blueprint $table){
-            $table->foreign('person_id')->references('id')->on('persons');
+            $table->foreign('person_id')->references('id')->on('persons')->onDelete('cascade');
         });
     }
 

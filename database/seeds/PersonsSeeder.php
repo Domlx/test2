@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
-use App\Persons;
+use App\Models\Persons;
 
 class PersonsSeeder extends Seeder
 {
